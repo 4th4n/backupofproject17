@@ -14,8 +14,13 @@ class OrderController extends Controller
     {
         $items = Item::all();
         $order = session()->get('order', []);
-        
-        return view('kiosk.index', compact('items', 'order'));
+
+        // Calculate total amount
+        $totalAmount = collect($order)->sum(function($details) {
+            return $details['price'] * $details['quantity'];
+        });
+
+        return view('kiosk.index', compact('items', 'order', 'totalAmount'));
     }
 
     public function addToOrder(Request $request)
@@ -55,21 +60,21 @@ class OrderController extends Controller
 
     public function checkout()
     {
-        // Kunin ang mga order mula sa session
+        // Get order from session
         $orderData = session('order');
-    
+
         if (!$orderData) {
             return redirect()->route('kiosk.index')->with('error', 'Walang order na available.');
         }
-    
-        // I-save ang order sa database
+
+        // Calculate total price
         $totalPrice = collect($orderData)->sum(function($details) {
             return $details['price'] * $details['quantity'];
         });
-    
+
         // Save order to database
         $newOrder = Order::create(['total_price' => $totalPrice]);
-    
+
         foreach ($orderData as $itemId => $details) {
             OrderItem::create([
                 'order_id' => $newOrder->id,
@@ -78,16 +83,17 @@ class OrderController extends Controller
                 'price' => $details['price'],
             ]);
         }
-    
-        // I-clear ang session
+
+        // Clear session
         Session::forget('order');
-    
-        // I-redirect sa main menu o order page pagkatapos ng checkout
-        return redirect()->route('kiosk.index')->with('success', 'Order na-save at naka-checkout na!'); // Dito ang redirect sa main menu
+
+        // Redirect to main menu after checkout
+        return redirect()->route('kiosk.index')->with('success', 'Order na-save at naka-checkout na!');
     }
+
     public function viewOrders()
     {
-        // Kunin ang lahat ng orders kasama ang kanilang items
+        // Get all orders with items
         $orders = Order::with('items')->get();
 
         return view('admin.orders', compact('orders'));
@@ -96,13 +102,13 @@ class OrderController extends Controller
     public function update(Request $request)
     {
         $order = session()->get('order');
-        
-        if($order) {
+
+        if ($order) {
             $itemId = $request->input('item_id');
             $quantity = $request->input('quantity');
-            
+
             // Ensure quantity is valid
-            if($quantity > 0) {
+            if ($quantity > 0) {
                 $order[$itemId]['quantity'] = $quantity;
                 session()->put('order', $order);
             }

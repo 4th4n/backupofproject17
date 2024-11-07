@@ -55,3 +55,4 @@ Route::post('/order/update', [OrderController::class, 'update'])->name('order.up
 
 Route::get('/menu/search', [ItemController::class, 'search'])->name('menu.search');
 
+Route::get('/menu/category/{category}', [ItemController::class, 'showCategory'])->name('menu.category');
