@@ -20,32 +20,34 @@ class ItemController extends Controller
     }
  
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'description' => 'nullable',
-            'quantity' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the image
-        ]);
-    
-        $item = new Item;
-        $item->name = $request->name;
-        $item->price = $request->price;
-        $item->description = $request->description;
-        $item->quantity = $request->quantity;
-    
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();  // Generate a unique file name
-            $request->image->move(public_path('images'), $imageName);  // Move image to public/images
-            $item->image = $imageName;  // Save image file name in the database
-        }
-    
-        $item->save();
-    
-        return redirect()->route('items.index')->with('success', 'Item created successfully');
+{
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'description' => 'nullable',
+        'quantity' => 'required|integer',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the image
+        'category' => 'required|string',  // Add category validation
+    ]);
+
+    $item = new Item;
+    $item->name = $request->name;
+    $item->price = $request->price;
+    $item->description = $request->description;
+    $item->quantity = $request->quantity;
+    $item->category = $request->category; // Assign the category from the form
+
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        $imageName = time() . '.' . $request->image->extension();  // Generate a unique file name
+        $request->image->move(public_path('images'), $imageName);  // Move image to public/images
+        $item->image = $imageName;  // Save image file name in the database
     }
+
+    $item->save();
+
+    return redirect()->route('items.index')->with('success', 'Item created successfully');
+}
 
 
     
@@ -109,6 +111,22 @@ public function category($category)
 
     return view('kiosk.index', compact('items', 'order', 'totalAmount'));
 }
+
+public function showCategory($category)
+{
+    $items = Item::where('category', $category)->get();  // Make sure the category column exists
+
+    // Get the current order and calculate the total amount
+    $order = session()->get('order', []);
+    $totalAmount = collect($order)->sum(function ($details) {
+        return $details['price'] * $details['quantity'];
+    });
+
+    // Pass the items and totalAmount to the view
+    return view('kiosk.index', compact('items', 'order', 'totalAmount'));
+}
+
+
 
 
 }

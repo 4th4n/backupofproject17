@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.dashboard')
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
@@ -47,48 +47,50 @@
         </div>
     @endif
 </div>
+@endsection
+
+@section('styles')
 <style>
     /* custom.css */
 
-body {
-    background-color: #f8f9fa; /* Light background for better contrast */
-}
+    body {
+        background-color: #f8f9fa; /* Light background for better contrast */
+    }
 
-h1 {
-    color: #333; /* Darker text color for the heading */
-    font-weight: bold; /* Bold font for emphasis */
-}
+    h1 {
+        color: #333; /* Darker text color for the heading */
+        font-weight: bold; /* Bold font for emphasis */
+    }
 
-.card {
-    border: 1px solid #e0e0e0; /* Light border around the card */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
+    .card {
+        border: 1px solid #e0e0e0; /* Light border around the card */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
 
-.table {
-    background-color: #ffffff; /* White background for the table */
-}
+    .table {
+        background-color: #ffffff; /* White background for the table */
+    }
 
-.table thead th {
-    background-color: #007bff; /* Bootstrap primary color for the header */
-    color: white; /* White text for contrast */
-}
+    .table thead th {
+        background-color: #007bff; /* Bootstrap primary color for the header */
+        color: white; /* White text for contrast */
+    }
 
-.table tbody tr:hover {
-    background-color: #f1f1f1; /* Light gray background on hover */
-}
+    .table tbody tr:hover {
+        background-color: #f1f1f1; /* Light gray background on hover */
+    }
 
-.alert {
-    margin-bottom: 20px; /* Space below alert messages */
-}
+    .alert {
+        margin-bottom: 20px; /* Space below alert messages */
+    }
 
-.list-unstyled {
-    padding-left: 0; /* Remove default padding */
-}
+    .list-unstyled {
+        padding-left: 0; /* Remove default padding */
+    }
 
-.list-unstyled li {
-    margin-bottom: 5px; /* Space between items */
-}
-
+    .list-unstyled li {
+        margin-bottom: 5px; /* Space between items */
+    }
 </style>
 @endsection

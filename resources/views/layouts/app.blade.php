@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiosk Ordering System</title>
+    <title>Ordering System for School Canteen</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +32,7 @@
             align-items: center;
             border-radius: 30px;
             background-color: #fff;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
             padding: 0.2rem 0.5rem;
             max-width: 400px;
             width: 100%;

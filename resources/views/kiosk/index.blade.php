@@ -10,7 +10,7 @@
     @endif
 
     <!-- Title -->
-    <h1 class="text-center mb-5">Ordering System for School Canteen</h1>
+    <h1 class="text-center mb-5"></h1>
 
     <!-- Search Bar -->
     <div class="search-container">
