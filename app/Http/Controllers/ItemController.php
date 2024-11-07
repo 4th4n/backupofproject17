@@ -66,6 +66,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Menu;
 // use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -171,6 +172,18 @@ public function destroy($id)
 
     // I-redirect pabalik sa item list na may success message
     return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
+}
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    // Search items based on name or description
+    $items = Item::where('name', 'LIKE', "%$query%")
+                ->orWhere('description', 'LIKE', "%$query%")
+                ->get();
+
+    // Return the view with the search results
+    return view('kiosk.index', compact('items'));
 }
 
 

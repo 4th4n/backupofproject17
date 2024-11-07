@@ -53,7 +53,5 @@ Route::resource('items', ItemController::class);
 
 Route::post('/order/update', [OrderController::class, 'update'])->name('order.update');
 
-use App\Http\Controllers\MenuController;
+Route::get('/menu/search', [ItemController::class, 'search'])->name('menu.search');
 
-Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
-Route::get('/menu/search', [MenuController::class, 'search'])->name('menu.search');
