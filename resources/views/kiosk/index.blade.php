@@ -39,7 +39,6 @@
             <a href="{{ route('menu.category', 'chocolates') }}" class="category-link">Chocolates</a>
         </div>
     </div>
-
     <div class="row">
         <!-- Menu Section -->
         <div class="col-md-8">
@@ -68,7 +67,7 @@
                     </div>
                     @endforeach
                 @else
-                    <p>No items found for your search.</p>
+                    <p>No items found.</p>
                 @endif
             </div>
         </div>
