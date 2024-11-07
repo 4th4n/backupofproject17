@@ -88,15 +88,28 @@ public function search(Request $request)
                 ->orWhere('description', 'LIKE', "%$query%")
                 ->get();
 
-    // Return the view with the search results
-    return view('kiosk.index', compact('items'));
-}
+    // Get the current order and calculate the total amount
+    $order = session()->get('order', []);
+    $totalAmount = collect($order)->sum(function ($details) {
+        return $details['price'] * $details['quantity'];
+    });
 
+    // Return the view with the search results
+    return view('kiosk.index', compact('items', 'order', 'totalAmount'));
+}
 public function category($category)
 {
     $items = Item::where('category', $category)->get();
-    return view('kiosk.index', compact('items'));
+
+    // Get the current order and calculate the total amount
+    $order = session()->get('order', []);
+    $totalAmount = collect($order)->sum(function ($details) {
+        return $details['price'] * $details['quantity'];
+    });
+
+    return view('kiosk.index', compact('items', 'order', 'totalAmount'));
 }
+
 
 }
 

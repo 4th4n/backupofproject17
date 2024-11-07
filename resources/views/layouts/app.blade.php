@@ -10,36 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Add this in the <head> section of layouts/app.blade.php -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Custom Styles -->
     <style>
         body {
             max-width: 100%; /* Allow the container to take the full width */
             padding: 0 15px; /* Add some padding */
-        }
-        
-        /* Navbar Styles */
-        .navbar {
-            background-color: #f0f4f8;
-            padding: 0.5rem 1rem;
-            width: 100%; /* Ensure navbar takes full width */
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffc107;
-        }
-
-        .nav-link {
-            color: #333 !important; /* Changed to a visible color */
-            font-weight: bold;
-        }
-
-        .nav-link:hover {
-            color: #ffc107 !important;
         }
 
         /* Responsive Search Container */
@@ -85,25 +62,6 @@
             margin-left: 10px;
         }
 
-        /* Offcanvas Menu Customizations */
-        .custom-offcanvas-bg {
-            background-color: black;
-            color: white;
-        }
-
-        .custom-offcanvas .nav-link {
-            color: white !important;
-            font-weight: bold;
-        }
-
-        .custom-offcanvas .nav-link:hover {
-            color: #cccccc !important;
-        }
-
-        .custom-offcanvas .nav-link.active {
-            color: #ffcc00 !important;
-        }
-        
         /* Footer */
         .footer {
             background-color: #f8f9fa;
@@ -131,29 +89,27 @@
                 max-width: 100%;
             }
         }
-
-        /* Custom style for black navbar-toggler-icon */
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 1)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-        }
     </style>
 </head>
 <body>
-  
-    <div class="offcanvas offcanvas-start custom-offcanvas custom-offcanvas-bg" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <div class="container-fluid">
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="logo" width="40" height="30">
+                </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <!-- Remaining menu items or any new ones can be added here -->
+                </ul>
+            </div>
         </div>
-      
-        <div class="offcanvas-body">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ url('/') }}">Home</a>
-                </li>
-        </div>
-    </div>
-   
+    </nav>
+
     <!-- Main Content -->
     <main class="container-fluid mt-4 flex-grow-1">
         @yield('content')
@@ -162,11 +118,11 @@
     <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container-fluid">
-            <span class="text-muted">&copy; {{ date('Y') }} Kiosk Ordering System</span>
+            <span class="text-muted">&copy; {{ date('Y') }} Ordering System for School Canteen</span>
         </div>
     </footer>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

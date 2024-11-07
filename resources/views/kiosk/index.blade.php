@@ -61,7 +61,7 @@
                                 <form action="{{ route('order.add') }}" method="POST" class="mt-auto">
                                     @csrf
                                     <input type="hidden" name="item_id" value="{{ $item->id }}">
-                                    <button type="submit" class="btn btn-primary btn-block add-to-order-btn">Add to Order</button>
+                                    <button type="submit" class="btn btn-primary btn-block add-to-order-btn">Add to Cart</button>
                                 </form>
                             </div>
                         </div>
