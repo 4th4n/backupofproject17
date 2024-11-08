@@ -116,4 +116,15 @@ class OrderController extends Controller
 
         return redirect()->back();
     }
+ 
+    
+    public function completeOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->completed = request()->has('completed');
+        $order->save();
+        return redirect()->back()->with('success', 'Order status updated successfully.');
+    }
+    
+
 }

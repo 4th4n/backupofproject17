@@ -11,15 +11,11 @@ use App\Http\Controllers\AuthController;
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/admin_dashboard', [AuthController::class, 'showDashboard'])->name('admin.dashboard');
 
-// Route para sa dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard'); // Load ang dashboard.blade.php
-})->middleware('auth');
 
-use App\Http\Controllers\AdminController;
 
-Route::get('/admin', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
+
 
 // Route::get('/admin', function () {
 //     return view('admin'); // Ang 'admin' ay tumutukoy sa 'admin.blade.php' file sa views folder.
@@ -56,3 +52,10 @@ Route::post('/order/update', [OrderController::class, 'update'])->name('order.up
 Route::get('/menu/search', [ItemController::class, 'search'])->name('menu.search');
 
 Route::get('/menu/category/{category}', [ItemController::class, 'showCategory'])->name('menu.category');
+
+
+
+
+// In routes/web.php
+Route::patch('/order/{id}/complete', [OrderController::class, 'completeOrder'])->name('order.complete');
+

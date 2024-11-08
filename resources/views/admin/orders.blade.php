@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container my-5">
-    <h1 class="mb-4 text-center">Order History</h1>
+    <h1 class="mb-4 text-center">Order List</h1>
 
     @if($orders->isEmpty())
         <div class="alert alert-info text-center" role="alert">
@@ -19,15 +19,18 @@
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr>
+                                <th scope="col">Order No.</th>
                                 <th scope="col">Order ID</th>
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Items</th>
                                 <th scope="col">Created At</th>
+                                <th scope="col">Completed</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($orders as $order)
                                 <tr>
+                                    <td>{{ $order->order_number }}</td>
                                     <td>{{ $order->id }}</td>
                                     <td>₱{{ number_format($order->total_price, 2) }} pesos</td>
                                     <td>
@@ -38,6 +41,27 @@
                                         </ul>
                                     </td>
                                     <td>{{ $order->created_at->format('F j, Y') }}</td>
+                                    <td>
+                                        <form action="{{ route('order.complete', $order->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="form-check">
+                                                <input type="checkbox" 
+                                                       class="form-check-input" 
+                                                       name="completed" 
+                                                       id="completed_{{ $order->id }}"
+                                                       {{ $order->completed ? 'checked disabled' : '' }}>
+                                                <label class="form-check-label" for="completed_{{ $order->id }}">
+                                                    Mark as Completed
+                                                </label>
+                                            </div>
+                                            <!-- <button type="submit" 
+                                                    class="btn btn-primary btn-sm mt-2" 
+                                                    {{ $order->completed ? 'disabled' : '' }}>
+                                                Submit
+                                            </button>
+                                        </form> -->
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -47,50 +71,12 @@
         </div>
     @endif
 </div>
-@endsection
 
-@section('styles')
 <style>
-    /* custom.css */
-
-    body {
-        background-color: #f8f9fa; /* Light background for better contrast */
-    }
-
-    h1 {
-        color: #333; /* Darker text color for the heading */
-        font-weight: bold; /* Bold font for emphasis */
-    }
-
-    .card {
-        border: 1px solid #e0e0e0; /* Light border around the card */
-        border-radius: 8px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    }
-
-    .table {
-        background-color: #ffffff; /* White background for the table */
-    }
-
-    .table thead th {
-        background-color: #007bff; /* Bootstrap primary color for the header */
-        color: white; /* White text for contrast */
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1; /* Light gray background on hover */
-    }
-
-    .alert {
-        margin-bottom: 20px; /* Space below alert messages */
-    }
-
-    .list-unstyled {
-        padding-left: 0; /* Remove default padding */
-    }
-
-    .list-unstyled li {
-        margin-bottom: 5px; /* Space between items */
+    /* Style for the checkbox */
+    .form-check-input {
+        transform: scale(1.2);
+        cursor: pointer;
     }
 </style>
 @endsection
