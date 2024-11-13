@@ -11,7 +11,11 @@ use App\Http\Controllers\AuthController;
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/admin', [AuthController::class, 'showDashboard'])->name('admin.dashboard');
 Route::get('/admin_dashboard', [AuthController::class, 'showDashboard'])->name('admin.dashboard');
+// Route::middleware('auth')->group(function () {
+//     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+// });
 
 
 

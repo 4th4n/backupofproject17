@@ -192,4 +192,15 @@
         color: white; /* Text color when button is clicked */
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const alert = document.querySelector('.alert-success');
+        if (alert) {
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 1000); // 3000 milliseconds = 3 seconds
+        }
+    });
+</script>
 @endsection

@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container my-5">
-    <h1 class="mb-4 text-center">Order List</h1>
+    <h1 class="mb-4 text-center">List of Orders</h1>
 
     @if($orders->isEmpty())
         <div class="alert alert-info text-center" role="alert">
@@ -19,7 +19,7 @@
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Order No.</th>
+                                <!-- <th scope="col">Order No.</th> -->
                                 <th scope="col">Order ID</th>
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Items</th>
@@ -30,7 +30,7 @@
                         <tbody>
                             @foreach($orders as $order)
                                 <tr>
-                                    <td>{{ $order->order_number }}</td>
+                                    <!-- <td>{{ $order->order_number }}</td> -->
                                     <td>{{ $order->id }}</td>
                                     <td>₱{{ number_format($order->total_price, 2) }} pesos</td>
                                     <td>
@@ -52,7 +52,7 @@
                                                        id="completed_{{ $order->id }}"
                                                        {{ $order->completed ? 'checked disabled' : '' }}>
                                                 <label class="form-check-label" for="completed_{{ $order->id }}">
-                                                    Mark as Completed
+                                                    
                                                 </label>
                                             </div>
                                             <!-- <button type="submit" 

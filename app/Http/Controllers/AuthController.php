@@ -51,6 +51,11 @@ class AuthController extends Controller
         // Redirect to login page after logout
         return redirect()->route('login');
     }
+    // public function index()
+    // {
+    //     $products = Product::all(); // Retrieve all products from the database
+    //     return view('admin.dashboard', compact('products')); // Pass products to the view
+    // }
 }
 
 
