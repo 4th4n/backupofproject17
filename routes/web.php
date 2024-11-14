@@ -16,6 +16,12 @@ Route::get('/admin_dashboard', [AuthController::class, 'showDashboard'])->name('
 // Route::middleware('auth')->group(function () {
 //     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 // });
+// routes/web.php
+Route::get('/items/{id}/edit', [ItemController::class, 'edit'])->name('items.edit');
+Route::put('/items/{id}', [ItemController::class, 'update'])->name('items.update');
+Route::get('/admin/history', [OrderController::class, 'orderHistory'])->name('admin.history');
+
+Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
 
 

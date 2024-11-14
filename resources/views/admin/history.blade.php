@@ -6,11 +6,11 @@
 
 @section('content')
 <div class="container my-5">
-    <h1 class="mb-4 text-center">List of Orders</h1>
+    <h1 class="mb-4 text-center">Order History</h1>
 
     @if($orders->isEmpty())
         <div class="alert alert-info text-center" role="alert">
-            No orders found.
+            No past orders found.
         </div>
     @else
         <div class="card">
@@ -19,18 +19,16 @@
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <!-- <th scope="col">Order No.</th> -->
                                 <th scope="col">Order ID</th>
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Items</th>
                                 <th scope="col">Created At</th>
-                                <th scope="col">Completed</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($orders as $order)
                                 <tr>
-                                    <!-- <td>{{ $order->order_number }}</td> -->
                                     <td>{{ $order->id }}</td>
                                     <td>₱{{ number_format($order->total_price, 2) }} pesos</td>
                                     <td>
@@ -42,20 +40,7 @@
                                     </td>
                                     <td>{{ $order->created_at->format('F j, Y h:i A') }}</td>
                                     <td>
-                                        <form action="{{ route('order.complete', $order->id) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <div class="form-check">
-                                                <input type="checkbox" 
-                                                       class="form-check-input" 
-                                                       name="completed" 
-                                                       id="completed_{{ $order->id }}"
-                                                       {{ $order->completed ? 'checked disabled' : '' }}>
-                                                <label class="form-check-label" for="completed_{{ $order->id }}">
-                                                    Mark as Completed
-                                                </label>
-                                            </div>
-                                        </form>
+                                        {{ $order->completed ? 'Completed' : 'Pending' }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -66,12 +51,4 @@
         </div>
     @endif
 </div>
-
-<style>
-    /* Style for the checkbox */
-    .form-check-input {
-        transform: scale(1.2);
-        cursor: pointer;
-    }
-</style>
 @endsection

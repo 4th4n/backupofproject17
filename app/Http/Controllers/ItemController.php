@@ -126,6 +126,33 @@ public function showCategory($category)
     return view('kiosk.index', compact('items', 'order', 'totalAmount'));
 }
 
+// app/Http/Controllers/ItemController.php
+
+public function edit($id)
+{
+    $item = Item::findOrFail($id);
+    return view('items.edit', compact('item'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'quantity' => 'required|integer',
+        'low_stock_level' => 'nullable|integer',
+    ]);
+
+    $item = Item::findOrFail($id);
+    $item->update([
+        'name' => $request->name,
+        'price' => $request->price,
+        'quantity' => $request->quantity,
+        'low_stock_level' => $request->low_stock_level,
+    ]);
+
+    return redirect()->route('items.index')->with('success', 'Item updated successfully.');
+}
 
 
 

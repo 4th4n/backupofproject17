@@ -30,12 +30,12 @@
     <div class="row">
         
         <!-- Menu Section -->
-        <div class="col-md-8">
+<div class="col-md-8">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <!-- Menu Title -->
         <h2 class="text-left text-secondary">Menu</h2>
 
-        <!-- Search Bar -->
+        <!-- Search Bar
         <div class="search-container">
             <form class="search-input-group d-flex" action="{{ route('menu.search') }}" method="GET">
                 <input class="form-control w-auto rounded-pill me-2" type="search" name="query" placeholder="Search for delicious items..." aria-label="Search">
@@ -47,34 +47,50 @@
                 </button>
             </form>
         </div>
+        -->
+
+        <div class="search-container">
+  <form class="search-input-group d-flex align-items-center" action="{{ route('menu.search') }}" method="GET">
+    <input id="search-input" class="form-control rounded-pill me-3" type="search" name="query" placeholder="Search for delicious items..." aria-label="Search">
+    
+    <button type="submit" class="btn btn-primary rounded-pill px-3 me-2">
+      <i class="bi bi-search"></i>
+    </button>
+    
+    <button id="voice-search-btn" type="button" class="btn btn-secondary rounded-pill px-3">
+      <i class="bi bi-mic"></i>
+    </button>
+  </form>
+</div>
+
     </div>
 
     <!-- Menu Items -->
-    <div class="row">
-        @if(isset($items) && !$items->isEmpty())
+    <div id="product-list" class="row">
+          @if(isset($items) && !$items->isEmpty())
             @foreach($items as $item)
-            <div class="col-12 col-sm-6 col-md-4 mb-4">
+              <div class="col-12 col-sm-6 col-md-4 mb-4 product-item" data-name="{{ $item->name }}">
                 <div class="card h-100 shadow border-0 rounded-lg overflow-hidden">
-                    @if($item->image)
+                  @if($item->image)
                     <img src="{{ asset('images/' . $item->image) }}" class="card-img-top img-fluid" alt="{{ $item->name }}">
-                    @else
+                  @else
                     <img src="{{ asset('images/default.png') }}" class="card-img-top img-fluid" alt="Default Image">
-                    @endif
-                    <div class="card-body d-flex flex-column text-center">
-                        <h5 class="card-title text-primary">{{ $item->name }}</h5>
-                        <p class="card-text text-muted mb-3">Price: <strong>₱{{ number_format($item->price, 2) }}</strong></p>
-                        <form action="{{ route('order.add') }}" method="POST" class="mt-auto">
-                            @csrf
-                            <input type="hidden" name="item_id" value="{{ $item->id }}">
-                            <button type="submit" class="btn btn-primary rounded-pill w-100">Add to Cart</button>
-                        </form>
-                    </div>
+                  @endif
+                  <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title text-primary">{{ $item->name }}</h5>
+                    <p class="card-text text-muted mb-3">Price: <strong>₱{{ number_format($item->price, 2) }}</strong></p>
+                    <form action="{{ route('order.add') }}" method="POST" class="mt-auto">
+                      @csrf
+                      <input type="hidden" name="item_id" value="{{ $item->id }}">
+                      <button type="submit" class="btn btn-primary rounded-pill w-100">Add to Cart</button>
+                    </form>
+                  </div>
                 </div>
-            </div>
+              </div>
             @endforeach
-        @else
+          @else
             <p class="text-center text-muted">No items found.</p>
-        @endif
+          @endif
     </div>
 </div>
 
@@ -139,6 +155,68 @@
 </div>
 
 <!-- Style adjustments -->
+ <script>
+ document.addEventListener("DOMContentLoaded", function () {
+  const voiceSearchBtn = document.getElementById("voice-search-btn");
+  const searchInput = document.getElementById("search-input");
+  const productList = document.getElementById("product-list");
+
+  // Check if browser supports webkitSpeechRecognition
+  if ("webkitSpeechRecognition" in window) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+
+    // Start voice recognition on button click
+    voiceSearchBtn.addEventListener("click", () => {
+      recognition.start();
+    });
+
+    // Process result of voice recognition
+    recognition.onresult = event => {
+      const query = event.results[0][0].transcript;
+      searchInput.value = query;
+      filterProducts(query);
+    };
+
+    // Handle voice recognition errors
+    recognition.onerror = event => {
+      console.error("Voice search error:", event.error);
+      alert("Voice search error: " + event.error);
+    };
+  } else {
+    alert("Voice search is not supported in this browser.");
+  }
+
+  // Filter products based on search input or voice recognition query
+  function filterProducts(query) {
+    const items = document.querySelectorAll(".product-item");
+    query = query.toLowerCase();
+    
+    let resultsFound = false; // Track if there are matching results
+
+    items.forEach(item => {
+      const name = item.getAttribute("data-name").toLowerCase();
+      if (name.includes(query)) {
+        item.style.display = "block";
+        resultsFound = true;
+      } else {
+        item.style.display = "none";
+      }
+    });
+
+    // Show a message if no results match the search query
+    if (!resultsFound) {
+      productList.innerHTML = `<p class="text-center text-muted">No items match your search.</p>`;
+    }
+  }
+
+  // Event listener for text input in the search box
+  searchInput.addEventListener("input", event => {
+    filterProducts(event.target.value);
+  });
+});   
+ </script>
 <style>
     .container-fluid {
         max-width: 100%;

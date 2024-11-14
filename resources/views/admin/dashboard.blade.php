@@ -9,55 +9,85 @@
     <style>
         /* Offcanvas menu styling */
         .custom-offcanvas-bg {
-            background-color: #212529;
-            color: #adb5bd;
+            background-color: #2c3e50; /* Dark blue-gray */
+            color: #ecf0f1; Light gray
         }
         .custom-offcanvas-bg .offcanvas-title {
             font-weight: bold;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             color: #ffffff;
         }
         .custom-offcanvas-bg .nav-link {
-            color: #adb5bd;
+            color: #ecf0f1;
             font-weight: 500;
+            transition: color 0.3s ease;
         }
         .custom-offcanvas-bg .nav-link:hover {
-            color: #ffffff;
+            color: #3498db; /* Hover color */
         }
 
-        /* Navbar and main content styling */
+        /* Navbar styling */
         .navbar {
-            background-color: #212529;
-            border-bottom: 2px solid #343a40;
+            background-color: #34495e; /* Darker blue-gray */
+            border-bottom: 2px solid #1abc9c; /* Light teal border */
         }
         .navbar-brand {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
+            color: #ecf0f1;
+        }
+        .navbar-brand:hover {
+            color: #3498db;
         }
 
         /* Main content styling */
         main {
-            background-color: #f8f9fa;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #ecf0f1; /* Light background for content */
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         h2 {
-            color: #343a40;
+            color: #2c3e50;
             font-weight: bold;
-            font-size: 1.75rem;
+            font-size: 1.8rem;
             margin-bottom: 1.5rem;
         }
 
-        /* Button styles */
+        /* Button styling */
         .btn-primary {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
+            background-color: #1abc9c; /* Light teal */
+            border-color: #1abc9c;
             font-weight: 600;
+            transition: background-color 0.3s ease;
         }
         .btn-primary:hover {
-            background-color: #0b5ed7;
-            border-color: #0a58ca;
+            background-color: #16a085;
+            border-color: #16a085;
+        }
+
+        .btn-secondary {
+            background-color: #3498db; /* Blue */
+            border-color: #3498db;
+            font-weight: 600;
+        }
+        .btn-secondary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        /* Offcanvas toggler styling */
+        .navbar-toggler-icon {
+            background-color: ;
+        }
+
+        /* Logout link styling */
+        .nav-link.logout-link {
+            color: #e74c3c; /* Red for logout */
+            font-weight: bold;
+        }
+        .nav-link.logout-link:hover {
+            color: #c0392b;
         }
     </style>
 </head>
@@ -70,7 +100,7 @@
             </button>
             <span class="navbar-brand mb-0 h1">Admin Dashboard</span>
         </div>
-    </nav>
+        </nav>
 
     <!-- Offcanvas Menu -->
     <div class="offcanvas offcanvas-start custom-offcanvas-bg" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -86,12 +116,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('orders.view') }}">List Orders</a>
                 </li>
-                <!-- Add Item Button (Uncomment if needed) -->
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="{{ route('items.create') }}">Add Item</a>
-                </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <a class="nav-link" href="{{ route('admin.history') }}">Order History</a> <!-- Link to Order History -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link logout-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                        Logout
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -104,7 +133,6 @@
 
     <!-- Main Content -->
     <main class="container my-4">
-       
         @yield('content')
     </main>
 

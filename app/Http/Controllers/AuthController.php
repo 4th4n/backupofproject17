@@ -56,6 +56,7 @@ class AuthController extends Controller
     //     $products = Product::all(); // Retrieve all products from the database
     //     return view('admin.dashboard', compact('products')); // Pass products to the view
     // }
+
 }
 
 

@@ -26,11 +26,19 @@
 //         // Validation and creation logic here
 //     }
 // }
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Item; // Correct import for Item
+use App\Models\Order; // Correct import for Order, if needed
 
 class AdminController extends Controller
 {
-
+    public function index()
+    {
+        $items = Item::all();
+        $orders = Order::all();
+        return view('admin.dashboard', compact('items', 'orders'));
+    }
 }
