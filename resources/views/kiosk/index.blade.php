@@ -96,64 +96,87 @@
 
 
         <!-- Order Section -->
+       
         <div class="col-md-4">
-            <h2 class="text-center text-secondary mb-4">Your Order</h2>
-            @if(session('order'))
-            <ul class="list-group mb-3 shadow rounded-lg">
-                @foreach(session('order') as $id => $details)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div class="order-item-info">
-                        <h6 class="mb-0">{{ $details['name'] }}</h6>
-                        <div class="d-flex align-items-center">
-                            <form action="{{ route('order.update') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="item_id" value="{{ $id }}">
-                                <input type="hidden" name="quantity" value="{{ $details['quantity'] - 1 }}">
-                                <button type="submit" class="btn btn-light btn-sm me-2 rounded-circle" {{ $details['quantity'] <= 1 ? 'disabled' : '' }}>
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </form>
-                            
-                            <span class="fw-bold">{{ $details['quantity'] }}</span>
+    <h2 class="text-center text-secondary mb-4">Your Order</h2>
+    @if(session('order'))
+    <ul class="list-group mb-3 shadow rounded-lg">
+        @foreach(session('order') as $id => $details)
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="order-item-info">
+                <h6 class="mb-0">{{ $details['name'] }}</h6>
+                <div class="d-flex align-items-center">
+                    <form action="{{ route('order.update') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="item_id" value="{{ $id }}">
+                        <input type="hidden" name="quantity" value="{{ $details['quantity'] - 1 }}">
+                        <button type="submit" class="btn btn-light btn-sm me-2 rounded-circle" {{ $details['quantity'] <= 1 ? 'disabled' : '' }}>
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </form>
+                    
+                    <span class="fw-bold">{{ $details['quantity'] }}</span>
 
-                            <form action="{{ route('order.update') }}" method="POST" class="ms-2">
-                                @csrf
-                                <input type="hidden" name="item_id" value="{{ $id }}">
-                                <input type="hidden" name="quantity" value="{{ $details['quantity'] + 1 }}">
-                                <button type="submit" class="btn btn-light btn-sm rounded-circle">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="order-item-controls d-flex align-items-center">
-                        <span class="order-item-price text-primary fw-bold">₱{{ number_format($details['price'] * $details['quantity'], 2) }}</span>
-                        <form action="{{ route('order.remove') }}" method="POST" class="ms-3">
-                            @csrf
-                            <input type="hidden" name="item_id" value="{{ $id }}">
-                            <button type="submit" class="btn btn-danger btn-sm rounded-circle">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-            <div class="total-amount text-center mb-3 p-3 bg-light rounded shadow">
-                <h4>Total Amount: <strong>₱{{ number_format($totalAmount, 2) }}</strong></h4>
+                    <form action="{{ route('order.update') }}" method="POST" class="ms-2">
+                        @csrf
+                        <input type="hidden" name="item_id" value="{{ $id }}">
+                        <input type="hidden" name="quantity" value="{{ $details['quantity'] + 1 }}">
+                        <button type="submit" class="btn btn-light btn-sm rounded-circle">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
-            <a href="{{ route('order.checkout') }}" class="btn btn-success btn-block rounded-pill px-4 py-2 shadow">
-                <i class="fas fa-shopping-cart"></i> Proceed to Checkout
-            </a>
-            @else
-            <div class="alert alert-info text-center">
-                <p>Your order is currently empty.</p>
+            <div class="order-item-controls d-flex align-items-center">
+                <span class="order-item-price text-primary fw-bold">₱{{ number_format($details['price'] * $details['quantity'], 2) }}</span>
+                <form action="{{ route('order.remove') }}" method="POST" class="ms-3">
+                    @csrf
+                    <input type="hidden" name="item_id" value="{{ $id }}">
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle" 
+                            onclick="confirmDelete(event, this.form)">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
             </div>
-            @endif
-        </div>
+        </li>
+        @endforeach
+    </ul>
+    <div class="total-amount text-center mb-3 p-3 bg-light rounded shadow">
+        <h4>Total Amount: <strong>₱{{ number_format($totalAmount, 2) }}</strong></h4>
     </div>
+    <a href="{{ route('order.checkout') }}" class="btn btn-success btn-block rounded-pill px-4 py-2 shadow">
+        <i class="fas fa-shopping-cart"></i> Proceed to Checkout
+    </a>
+    @else
+    <div class="alert alert-info text-center">
+        <p>Your order is currently empty.</p>
+    </div>
+    @endif
 </div>
 
+<script>
+    /**
+     * Function to confirm deletion of an item
+     * @param {Event} event - The click event
+     * @param {HTMLFormElement} form - The form element to submit
+     */
+    function confirmDelete(event, form) {
+        event.preventDefault(); // Pigilan ang form submission
+        if (confirm('Are you sure you want to delete this item?')) {
+            form.submit(); // Ituloy ang submission kapag confirmed
+        }
+    }
+</script>
+
+<style>
+    .total-amount {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .btn-block {
+        width: 100%;
+    }
+</style>
 <!-- Style adjustments -->
  <script>
  document.addEventListener("DOMContentLoaded", function () {
