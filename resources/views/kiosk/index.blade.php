@@ -67,31 +67,40 @@
 
     <!-- Menu Items -->
     <div id="product-list" class="row">
-          @if(isset($items) && !$items->isEmpty())
-            @foreach($items as $item)
-              <div class="col-12 col-sm-6 col-md-4 mb-4 product-item" data-name="{{ $item->name }}">
-                <div class="card h-100 shadow border-0 rounded-lg overflow-hidden">
-                  @if($item->image)
-                    <img src="{{ asset('images/' . $item->image) }}" class="card-img-top img-fluid" alt="{{ $item->name }}">
-                  @else
-                    <img src="{{ asset('images/default.png') }}" class="card-img-top img-fluid" alt="Default Image">
-                  @endif
-                  <div class="card-body d-flex flex-column text-center">
-                    <h5 class="card-title text-primary">{{ $item->name }}</h5>
-                    <p class="card-text text-muted mb-3">Price: <strong>₱{{ number_format($item->price, 2) }}</strong></p>
-                    <form action="{{ route('order.add') }}" method="POST" class="mt-auto">
-                      @csrf
-                      <input type="hidden" name="item_id" value="{{ $item->id }}">
-                      <button type="submit" class="btn btn-primary rounded-pill w-100">Add to Cart</button>
-                    </form>
-                  </div>
+    @if(isset($items) && !$items->isEmpty())
+        @foreach($items as $item)
+            <div class="col-12 col-sm-6 col-md-4 mb-4 product-item" data-name="{{ $item->name }}">
+                <div class="card h-100 shadow border-0 rounded-lg overflow-hidden position-relative">
+                    @if($item->image)
+                        <img src="{{ asset('images/' . $item->image) }}" class="card-img-top img-fluid" alt="{{ $item->name }}">
+                    @else
+                        <img src="{{ asset('images/default.png') }}" class="card-img-top img-fluid" alt="Default Image">
+                    @endif
+
+                    <div class="card-body d-flex flex-column text-center">
+                        <h5 class="card-title text-primary">{{ $item->name }}</h5>
+                        <p class="card-text text-muted mb-3">Price: <strong>₱{{ number_format($item->price, 2) }}</strong></p>
+
+                        <!-- Check Quantity -->
+                        @if($item->quantity > 0)
+                            <form action="{{ route('order.add') }}" method="POST" class="mt-auto">
+                                @csrf
+                                <input type="hidden" name="item_id" value="{{ $item->id }}">
+                                <button type="submit" class="btn btn-primary rounded-pill w-100">Add to Cart</button>
+                            </form>
+                        @else
+                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">Out of Stock</span>
+                            <button class="btn btn-secondary rounded-pill w-100" disabled>Out of Stock</button>
+                        @endif
+                    </div>
                 </div>
-              </div>
-            @endforeach
-          @else
-            <p class="text-center text-muted">No items found.</p>
-          @endif
-    </div>
+            </div>
+        @endforeach
+    @else
+        <p class="text-center text-muted">No items found.</p>
+    @endif
+</div>
+
 </div>
 
 

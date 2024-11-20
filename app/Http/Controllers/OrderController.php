@@ -26,12 +26,21 @@ class OrderController extends Controller
     public function addToOrder(Request $request)
     {
         $item = Item::find($request->item_id);
-
+    
+        // Check if the item exists and is not out of stock
+        if (!$item || $item->quantity <= 0) {
+            return redirect()->back()->with('error', 'Item is out of stock.');
+        }
+    
         // Get current order from session
         $order = session()->get('order', []);
-
+    
         // Add item or update quantity
-        if(isset($order[$item->id])) {
+        if (isset($order[$item->id])) {
+            // Check if the new quantity exceeds the available stock
+            if ($order[$item->id]['quantity'] + 1 > $item->quantity) {
+                return redirect()->back()->with('error', 'Not enough stock available for this item.');
+            }
             $order[$item->id]['quantity']++;
         } else {
             $order[$item->id] = [
@@ -40,12 +49,11 @@ class OrderController extends Controller
                 "quantity" => 1
             ];
         }
-
+    
         session()->put('order', $order);
-
+    
         return redirect()->back()->with('success', 'Item added to order.');
     }
-
     public function removeFromOrder(Request $request)
     {
         $order = session()->get('order');
@@ -59,37 +67,53 @@ class OrderController extends Controller
     }
 
     public function checkout()
-    {
-        // Get order from session
-        $orderData = session('order');
+{
+    // Get order from session
+    $orderData = session('order');
 
-        if (!$orderData) {
-            return redirect()->route('kiosk.index')->with('error', 'Walang order na available.');
-        }
-
-        // Calculate total price
-        $totalPrice = collect($orderData)->sum(function($details) {
-            return $details['price'] * $details['quantity'];
-        });
-
-        // Save order to database
-        $newOrder = Order::create(['total_price' => $totalPrice]);
-
-        foreach ($orderData as $itemId => $details) {
-            OrderItem::create([
-                'order_id' => $newOrder->id,
-                'item_id' => $itemId,
-                'quantity' => $details['quantity'],
-                'price' => $details['price'],
-            ]);
-        }
-
-        // Clear session
-        Session::forget('order');
-
-        // Redirect to main menu after checkout
-        return redirect()->route('kiosk.index')->with('success', 'Order na-save at naka-checkout na!');
+    if (!$orderData) {
+        return redirect()->route('kiosk.index')->with('error', 'Walang order na available.');
     }
+
+    // Calculate total price
+    $totalPrice = collect($orderData)->sum(function($details) {
+        return $details['price'] * $details['quantity'];
+    });
+
+    // Save order to database
+    $newOrder = Order::create(['total_price' => $totalPrice]);
+
+    foreach ($orderData as $itemId => $details) {
+        // Save each item in the OrderItem table
+        OrderItem::create([
+            'order_id' => $newOrder->id,
+            'item_id' => $itemId,
+            'quantity' => $details['quantity'],
+            'price' => $details['price'],
+        ]);
+
+        // Update item quantity in the inventory
+        $item = Item::find($itemId);
+
+        if ($item) {
+            $item->quantity -= $details['quantity'];
+
+            // Ensure quantity is not negative
+            if ($item->quantity < 0) {
+                return redirect()->route('kiosk.index')->with('error', 'Ang order ay hindi pwedeng magpatuloy dahil sa kakulangan ng stock.');
+            }
+
+            $item->save();
+        }
+    }
+
+    // Clear session
+    Session::forget('order');
+
+    // Redirect to main menu after checkout
+    return redirect()->route('kiosk.index')->with('success', 'Order na-save, naka-checkout na, at nabawas na ang stock!');
+}
+
 
     public function viewOrders()
     {

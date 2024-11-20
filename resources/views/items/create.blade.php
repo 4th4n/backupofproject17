@@ -22,7 +22,7 @@
                         <textarea name="description" class="form-control" id="description" placeholder="Description"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity</label>
+                        <label for="quantity" class="form-label">Stocks</label>
                         <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Quantity" required>
                     </div>
                     <div class="mb-3">
