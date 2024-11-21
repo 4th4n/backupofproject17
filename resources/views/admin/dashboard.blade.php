@@ -113,9 +113,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('items.index') }}">Update Inventory</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('orders.view') }}">List Orders</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.history') }}">Order History</a> <!-- Link to Order History -->
                 </li>

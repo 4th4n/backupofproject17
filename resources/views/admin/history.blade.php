@@ -6,13 +6,20 @@
 
 @section('content')
 <div class="container my-5">
-    <h1 class="mb-4 text-center">Order History</h1>
+    <h1 class="mb-4 text-center">List Orders</h1>
 
     @if($orders->isEmpty())
         <div class="alert alert-info text-center" role="alert">
             No past orders found.
         </div>
     @else
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Order Details</h3>
+            <!-- Print Button -->
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print
+            </button>
+        </div>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -23,7 +30,6 @@
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Items</th>
                                 <th scope="col">Created At</th>
-                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,10 +44,7 @@
                                             @endforeach
                                         </ul>
                                     </td>
-                                    <td>{{ $order->created_at->format('F j, Y h:i A') }}</td>
-                                    <td>
-                                        {{ $order->completed ? 'Completed' : 'Pending' }}
-                                    </td>
+                                    <td>{{ $order->created_at->timezone('Asia/Manila')->format('F j, Y g:i A') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -51,4 +54,12 @@
         </div>
     @endif
 </div>
+<style>
+    @media print {
+    button {
+        display: none; /* Itago ang Print button sa print output */
+    }
+}
+
+</style>
 @endsection

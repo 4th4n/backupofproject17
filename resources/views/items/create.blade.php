@@ -23,7 +23,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Stocks</label>
-                        <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Quantity" required>
+                        <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Stocks" required>
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Upload Image</label>

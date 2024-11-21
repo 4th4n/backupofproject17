@@ -24,10 +24,10 @@
             <input type="number" name="quantity" class="form-control" value="{{ old('quantity', $item->quantity) }}" required>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="low_stock_level" class="form-label">Low Stock Level</label>
             <input type="number" name="low_stock_level" class="form-control" value="{{ old('low_stock_level', $item->low_stock_level) }}">
-        </div>
+        </div> -->
 
         <button type="submit" class="btn btn-primary">Update Item</button>
     </form>

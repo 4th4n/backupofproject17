@@ -19,9 +19,10 @@
             <table class="table table-bordered table-hover">
                 <thead class="thead-light">
                     <tr>
-                        <th>Quantity</th>
+                       
                         <th>Name</th>
-                        <th>Low Stock Level</th>
+                        <th>Quantity</th>
+                        <!-- <th>Low Stock Level</th> -->
                         <th>Price</th>
                         <th>Actions</th>
                     </tr>
@@ -29,9 +30,10 @@
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td>{{ $item->quantity }}</td>
+                            
                             <td>{{ $item->name }}</td>
-                            <td>{{ $item->low_stock_level ?? 'N/A' }}</td>
+                            <td>{{ $item->quantity }}</td>
+                            <!-- <td>{{ $item->low_stock_level ?? 'N/A' }}</td> -->
                             <td>₱{{ number_format($item->price, 2) }}</td>
                             <td>
                                 <!-- Edit Button -->
